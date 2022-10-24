@@ -170,7 +170,6 @@ If you use this code, please cite the associated paper:
 title={Data-IQ: Characterizing subgroups with heterogeneous outcomes in tabular data},
 author={Seedat, Nabeel and Crabbe, Jonathan and Bica, Ioana and van der Schaar, Mihaela},
 booktitle={Advances in Neural Information Processing Systems},
-year={2022},
-url={TBD}
+year={2022}
 }
 ```
