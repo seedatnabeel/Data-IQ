@@ -1,3 +1,4 @@
+# third party
 import torch
 import torch.nn as nn
 
@@ -35,11 +36,12 @@ class LSTM(nn.Module):
 
         # input embedding layer
         self.embedding = nn.Embedding(
-            num_embeddings=num_words, embedding_dim=embedding_dim
+            num_embeddings=num_words,
+            embedding_dim=embedding_dim,
         )
 
         self.embedding.weight = nn.Parameter(
-            torch.tensor(embedding_matrix, dtype=torch.float32)
+            torch.tensor(embedding_matrix, dtype=torch.float32),
         )
 
         # requires grad is false since we use pre-trained word embeddings
