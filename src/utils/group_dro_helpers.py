@@ -1,3 +1,4 @@
+# third party
 import torch
 import torch.nn as nn
 
@@ -68,7 +69,7 @@ def train_loop(net, criterion, EPOCHS, train_loader, optimizer, device, subclass
                 epoch_acc += (predicted == y_batch).sum().item() / len(y_batch)
 
         print(
-            f"Epoch {e+0:03}: | Loss: {epoch_loss/len(train_loader):.5f} | Acc: {epoch_acc/len(train_loader):.3f}"
+            f"Epoch {e+0:03}: | Loss: {epoch_loss/len(train_loader):.5f} | Acc: {epoch_acc/len(train_loader):.3f}",
         )
 
     return net
@@ -91,8 +92,9 @@ def evaluate_model(net_test, X_test, y_test, easy_test, ambig_test, hard_test):
       a dictionary with the overall accuracy, the accuracy on the rest of the data, and the accuracy on
     the ambiguous data.
     """
-    from sklearn.metrics import accuracy_score
+    # third party
     import numpy as np
+    from sklearn.metrics import accuracy_score
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     net_test.eval()
@@ -115,7 +117,7 @@ def evaluate_model(net_test, X_test, y_test, easy_test, ambig_test, hard_test):
     preds = y_test_pred.data[:, 1].cpu().numpy()
     try:
         rest = accuracy_score(preds > threshold, y_test[partition])
-    except:
+    except BaseException:
         rest = accuracy_score(preds > threshold, y_test.to_numpy()[partition])
 
     partition = ambig_test
@@ -128,7 +130,7 @@ def evaluate_model(net_test, X_test, y_test, easy_test, ambig_test, hard_test):
     preds = y_test_pred.data[:, 1].cpu().numpy()
     try:
         ambig = accuracy_score(preds > threshold, y_test[partition])
-    except:
+    except BaseException:
         ambig = accuracy_score(preds > threshold, y_test.to_numpy()[partition])
 
     res = {}

@@ -1,7 +1,8 @@
+# third party
+from autograd_lib import autograd_lib
 import numpy as np
 import torch
 
-from autograd_lib import autograd_lib
 
 class DataIQ_Torch:
     def __init__(self, X, y, sparse_labels: bool = False):
@@ -110,7 +111,8 @@ class DataIQ_Torch:
 
                 # one hot encode the labels
                 y = torch.nn.functional.one_hot(
-                    y.to(torch.int64), num_classes=probabilities.shape[-1]
+                    y.to(torch.int64),
+                    num_classes=probabilities.shape[-1],
                 )
 
                 # Now we extract the gold label and predicted true label probas
@@ -122,11 +124,13 @@ class DataIQ_Torch:
 
                     # get gold labels
                     probabilities, y = torch.squeeze(
-                        torch.tensor(probabilities)
+                        torch.tensor(probabilities),
                     ), torch.squeeze(y)
 
                     batch_gold_label_probabilities = torch.where(
-                        y == 0, 1 - probabilities, probabilities
+                        y == 0,
+                        1 - probabilities,
+                        probabilities,
                     )
 
                 # if labels are one hot encoded, e.g. [[1,0,0], [0,1,0]]
@@ -136,7 +140,8 @@ class DataIQ_Torch:
 
                     # get gold labels
                     batch_gold_label_probabilities = torch.masked_select(
-                        probabilities, y.bool()
+                        probabilities,
+                        y.bool(),
                     )
                 else:
 
@@ -145,7 +150,8 @@ class DataIQ_Torch:
 
                     # get gold labels
                     batch_gold_label_probabilities = torch.masked_select(
-                        probabilities, y.bool()
+                        probabilities,
+                        y.bool(),
                     )
 
                 # move torch tensors to cpu as np.arrays()
@@ -156,16 +162,19 @@ class DataIQ_Torch:
 
                 # Append the new probabilities for the new batch
                 gold_label_probabilities = np.append(
-                    gold_label_probabilities, [batch_gold_label_probabilities]
+                    gold_label_probabilities,
+                    [batch_gold_label_probabilities],
                 )
                 true_probabilities = np.append(
-                    true_probabilities, [batch_true_probabilities]
+                    true_probabilities,
+                    [batch_true_probabilities],
                 )
 
         # Append the new gold label probabilities
         if self._gold_labels_probabilities is None:  # On first epoch of training
             self._gold_labels_probabilities = np.expand_dims(
-                gold_label_probabilities, axis=-1
+                gold_label_probabilities,
+                axis=-1,
             )
         else:
             stack = [
@@ -277,7 +286,7 @@ class DataIQ_SKLearn:
         Defaults to False
         """
         self.X = X
-        self.y = y
+        self.y = np.asarray(y).tolist()
         self._sparse_labels = sparse_labels
 
         # placeholder
@@ -314,16 +323,19 @@ class DataIQ_SKLearn:
 
         if not self.catboost:
             probabilities = torch.tensor(
-                clf.predict_proba(x, iteration_range=(0, iteration)), device=device
+                clf.predict_proba(x, iteration_range=(0, iteration)),
+                device=device,
             )
         else:
             probabilities = torch.tensor(
-                clf.predict_proba(x, ntree_start=0, ntree_end=iteration), device=device
+                clf.predict_proba(x, ntree_start=0, ntree_end=iteration),
+                device=device,
             )
 
         # one hot encode the labels
         y = torch.nn.functional.one_hot(
-            y.to(torch.int64), num_classes=probabilities.shape[-1]
+            y.to(torch.int64),
+            num_classes=probabilities.shape[-1],
         )
 
         # Now we extract the gold label and predicted true label probas
@@ -335,11 +347,13 @@ class DataIQ_SKLearn:
 
             # get gold labels
             probabilities, y = torch.squeeze(
-                torch.tensor(probabilities)
+                torch.tensor(probabilities),
             ), torch.squeeze(y)
 
             batch_gold_label_probabilities = torch.where(
-                y == 0, 1 - probabilities, probabilities
+                y == 0,
+                1 - probabilities,
+                probabilities,
             )
 
         # if labels are one hot encoded, e.g. [[1,0,0], [0,1,0]]
@@ -349,7 +363,8 @@ class DataIQ_SKLearn:
 
             # get gold labels
             batch_gold_label_probabilities = torch.masked_select(
-                probabilities, y.bool()
+                probabilities,
+                y.bool(),
             )
         else:
 
@@ -358,7 +373,8 @@ class DataIQ_SKLearn:
 
             # get gold labels
             batch_gold_label_probabilities = torch.masked_select(
-                probabilities, y.bool()
+                probabilities,
+                y.bool(),
             )
 
         # move torch tensors to cpu as np.arrays()
@@ -367,14 +383,16 @@ class DataIQ_SKLearn:
 
         # Append the new probabilities for the new batch
         gold_label_probabilities = np.append(
-            gold_label_probabilities, [batch_gold_label_probabilities]
+            gold_label_probabilities,
+            [batch_gold_label_probabilities],
         )
         true_probabilities = np.append(true_probabilities, [batch_true_probabilities])
 
         # Append the new gold label probabilities
         if self._gold_labels_probabilities is None:  # On first epoch of training
             self._gold_labels_probabilities = np.expand_dims(
-                gold_label_probabilities, axis=-1
+                gold_label_probabilities,
+                axis=-1,
             )
         else:
             stack = [

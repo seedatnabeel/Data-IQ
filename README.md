@@ -1,4 +1,10 @@
 # Data-IQ: Characterizing subgroups with heterogeneous outcomes in tabular data
+
+[![Tests](https://github.com/vanderschaarlab/Data-IQ/actions/workflows/test.yml/badge.svg)](https://github.com/vanderschaarlab/Data-IQ/actions/workflows/test.yml)
+[![Tutorials](https://github.com/vanderschaarlab/Data-IQ/actions/workflows/test_tutorials.yml/badge.svg)](https://github.com/vanderschaarlab/Data-IQ/actions/workflows/test_tutorials.yml)
+[![arXiv](https://img.shields.io/badge/arXiv-2210.13043-b31b1b.svg)](https://arxiv.org/abs/2210.13043)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/vanderschaarlab/Data-IQ/blob/main/LICENSE)
+
 ![image](pipeline.png "Data-IQ pipeline")
 
 This repository contains the implementation of Data-IQ, a "Data-Centric AI" framework to characterize subgroups with heterogeneous outcomes in tabular data.
@@ -21,15 +27,19 @@ For more details, please read our [NeurIPS 2022 paper](Link coming soon): *Data-
 
 - Minimum requirements to run Data-IQ on your own data
  ```shell
-pip install -r requirements-minimum.txt
+pip install data_iq
  ```
-
-- Full requirements to run Data-IQ 
+or from source,
  ```shell
-pip install -r requirements.txt
+pip install .
  ```
 
-4. Link the venv to the kernal:
+- Full requirements to run Data-IQ tests and tutorials
+ ```shell
+pip install .[testing]
+ ```
+
+4. Link the venv to the kernel:
   ```shell
  python -m ipykernel install --user --name=dataiq_env
  ```
@@ -40,7 +50,11 @@ pip install -r requirements.txt
 
 ### Getting Data-IQ
 
-* **Option 1**: Install as a package (called ``data_iq``)
+* **Option 1**: Install as a package (called ``data_iq``) from PyPI using
+ ```shell
+pip install data_iq
+ ```
+ or from source using
  ```shell
     python -m pip install -e .
  ```
@@ -83,7 +97,7 @@ for e in range(1, EPOCHS + 1):
     for X_batch, y_batch in train_loader:
         ### ADD TRAIN LOOP HERE ###
 
-    
+
     # *** CALL DATA-IQ on EPOCH END [LINE 2] ***
     dataiq.on_epoch_end(net, device=device)
 
@@ -118,7 +132,7 @@ clf.fit(X_train, y_train)
 
 for i in range(1, nest):
     # *** Characterize with Data-IQ [LINE 2] ***
-    dataiq_xgb.on_epoch_end(clf=clf, iteration=i) 
+    dataiq_xgb.on_epoch_end(clf=clf, iteration=i)
 
 # *** Access metrics ***
 aleatoric_uncertainty = dataiq_xgb.aleatoric
@@ -141,7 +155,7 @@ These notebooks can be found in the ``/tutorial`` folder. The Adult open-source 
 
 
 ## Data-IQ metrics
-The Data-IQ package provides a wide variety of metrics to characterize training dynamics. 
+The Data-IQ package provides a wide variety of metrics to characterize training dynamics.
 
 The primary & suggested metrics are: **Aleatoric uncertainty** and **Predictive confidence**. However, other metrics are also included as part of the package.
 
@@ -157,7 +171,7 @@ The different metrics available to characterize training dynamics are as follows
 
 ## Use-cases
 
-We highlight different use-cases of Data-IQ from understanding learning dynamics, creating characteristic curves, feature acquisition etc as well as, different data modalities in notebooks which can be found in the ``/use_cases`` folder. 
+We highlight different use-cases of Data-IQ from understanding learning dynamics, creating characteristic curves, feature acquisition etc as well as, different data modalities in notebooks which can be found in the ``/use_cases`` folder.
 
 
 ## Citing

@@ -1,12 +1,16 @@
+# stdlib
+import sys
+
+# third party
 import numpy as np
 import pandas as pd
 import sklearn
 import xgboost as xgb
 
-import sys
 sys.path.insert(0, "../..")
 
-from data_iq.dataiq_class import DataIQ_SKLearn
+# data_iq absolute
+from data_iq.dataiq_class import DataIQ_SKLearn  # noqa: E402
 
 
 def load_seer_cutract_dataset(name, seed):
@@ -81,7 +85,7 @@ def load_seer_cutract_dataset(name, seed):
     df["mortCancer"] = df["mortCancer"].astype(int)
     df["mort"] = df["mort"].astype(int)
 
-    mask = df[label] == True
+    mask = df[label] == True  # noqa: E712
     df_dead = df[mask]
     df_survive = df[~mask]
 
@@ -95,7 +99,7 @@ def load_seer_cutract_dataset(name, seed):
         [
             df_dead.sample(ns, random_state=random_seed),
             df_survive.sample(n_samples, random_state=random_seed),
-        ]
+        ],
     )
     df = sklearn.utils.shuffle(df, random_state=random_seed)
     df = df.reset_index(drop=True)
@@ -161,11 +165,11 @@ def filter_with_dataiq(X_train, y_train, nest):
     # Get the 3 subgroups
     hard_train = np.where(
         (confidence_train <= conf_thresh_low)
-        & (aleatoric_train <= np.percentile(aleatoric_train, percentile_thresh))
+        & (aleatoric_train <= np.percentile(aleatoric_train, percentile_thresh)),
     )[0]
     easy_train = np.where(
         (confidence_train >= conf_thresh_high)
-        & (aleatoric_train <= np.percentile(aleatoric_train, percentile_thresh))
+        & (aleatoric_train <= np.percentile(aleatoric_train, percentile_thresh)),
     )[0]
 
     hard_easy = np.concatenate((hard_train, easy_train))
