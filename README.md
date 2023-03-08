@@ -15,7 +15,7 @@ Data-IQ can be used to characterize data using ***any*** machine learning model 
 
 The utility of the subgroups extend to a variety of use-cases.
 
-For more details, please read our [NeurIPS 2022 paper](Link coming soon): *Data-IQ: Characterizing subgroups with heterogeneous outcomes in tabular data*.
+For more details, please read our [NeurIPS 2022 paper](https://arxiv.org/abs/2210.13043): *Data-IQ: Characterizing subgroups with heterogeneous outcomes in tabular data*.
 
 ## Installation
 1. Clone the repository
