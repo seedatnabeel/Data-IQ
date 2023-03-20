@@ -19,7 +19,7 @@ For more details, please read our [NeurIPS 2022 paper](https://arxiv.org/abs/221
 
 ## Installation
 1. Clone the repository
-2. Create a new virtual environment with Python 3.7. e.g:
+2. Create a new virtual environment with Python 3.7.2 e.g:
 ```shell
     virtualenv dataiq_env
 ```
